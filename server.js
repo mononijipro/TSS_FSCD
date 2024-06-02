@@ -1,5 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@14.2.0/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
+import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.4'
 
 const APP = new Application();
@@ -8,7 +8,7 @@ const SUPABASE = createClient("https://jqahlwbeiamsrblpprpx.supabase.co", "eyJhb
 
 APP.use(
     oakCors({
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173", "https://soul-puzzles.vercel.app"],
         optionsSuccessStatus: 200,
         methods: "POST, OPTIONS",
     }),
@@ -58,13 +58,17 @@ ROUTER.post("/record/:code/:progress", async ( context ) => {
 
 APP.use(ROUTER.routes());
 APP.use(ROUTER.allowedMethods());
-// APP.use(async (context) => {
-//     await context.send({
-//         root: `${Deno.cwd()}/public`,
-//         index: "index.html",
-//     });
-// });
+APP.use(async ( context, next ) => {
+    try {
+        await context.send({
+            root: `${Deno.cwd()}/public`,
+            index: "index.html"
+        })
+    } catch {
+        next()
+    }
+})
 APP.addEventListener("listen", ( { port } ) => {
-    console.log("Listening at http://localhost:" + port + "\n");
+    console.log("Listening on port" + port + "\n");
 });
 await APP.listen({ port: PORT });
