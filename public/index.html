@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>TSS_TSS SOUL CODE DISPENSER</title>
+		<style>
+            /* @font-face {
+				font-family: "DOTIMPACT";
+				src: url("DOTIMPACT.ttf") format("truetype");
+				font-weight: normal;
+			} */
+			* {
+				box-sizing: border-box;
+			}
+			html,
+			body {
+				color: white;
+				font-family: sans-serif;
+				font-size: 16px;
+				margin: 0;
+				padding: 0;
+				min-height: 100%;
+				height: 100%;
+				text-transform: uppercase;
+				background: #000 url(/soulcodebackground.gif) no-repeat center center;
+				background-size: cover;
+                overflow: hidden;
+			}
+			p {
+				text-align: center;
+			}
+			button {
+				color: white;
+				font-family: sans-serif;
+				font-size: 4vh;
+				text-align: center;
+				appearance: none;
+				text-transform: uppercase;
+				background: rgba(10,10,10,0.5);
+				border: 4px solid white;
+				border: none;
+				cursor: pointer;
+			}
+			button:hover,
+			button:active {
+				background-color: rgba(255, 0, 0, 0.5);
+			}
+			button[disabled] {
+				opacity: 0.1;
+			}
+            input,
+            button,
+            header {
+                color: white;
+                font-family: sans-serif;
+                text-transform: uppercase;
+                width: 100%;
+                height: 33.3vh;
+                margin: 0;
+                padding: 0 1rem;
+                text-align: center;
+                font-size: 2.5vh;
+                line-height: 1.5em;
+            }
+            form input {
+                color: white;
+                border: none;
+                border-bottom: 1px solid white;
+                height: auto;
+                line-height: 3em;
+                /* background: rgba(10,10,10,0.5); */
+                background: transparent;
+            }
+            form input:focus {
+                margin: 0;
+                padding: 0;
+            }
+            .digits {
+                width: 100%;
+                height: 33.3vh;
+                max-width: 960px;
+                margin: 0 auto;
+                flex-grow: 2;
+                display: flex;
+                padding: 1rem;
+                align-items: center;
+                gap: 8px;
+            }
+            .digits div {
+                color: rgb(161, 1, 0);;
+                border: 3px solid rgb(161, 1, 0);;
+                flex-grow: 1;
+                font-size: 2rem;
+                font-family: monospace;
+                min-height: 3rem;
+                max-height: 20vh;
+                line-height: 1em;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            dialog {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: rgba(0,0,0,1);
+                display: block;
+                padding: 0;
+                margin: 0;
+                opacity: 0;
+                pointer-events: none;
+                transition: 1s ease-out opacity;
+            }
+            dialog.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+            header {
+                padding: 0 4rem;
+                display: flex;
+                gap: 1.5em;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+		</style>
+	</head>
+	<body>
+        <form>
+            <header>
+                STEP 1) ENTER YOUR NAME HERE / <br />SCHRITT 1) BITTE NAMEN HIER EINGEBEN<br />
+                <input name="owner" value="" type="text" placeholder="YOUR NAME" />
+            </header>
+            <div class="digits">
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+            </div>
+            <button>STEP 2) PRESS HERE TO RETRIEVE SOUL CODE /<br /> SCHRITT 2) HIER DRÜCKEN UM SEELENCODE ZU ERHALTEN</button>
+        </form>
+        <dialog>
+            <header>THIS IS YOUR PERSONAL SOUL CODE. YOU GET 60 SECONDS TO WRITE IT DOWN /<br />DIES IST IHR PERSÖNLICHER SEELENCODE. BITTEN NOTIEREN SIE IHN SICH IN DEN NÄCHSTEN 60 SEKUNDEN.</header>
+            <div class="digits">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <button onclick="dismissCode()">DISMISS / BESTÄTIGEN</button>
+        </dialog>
+        <script>
+            const FORM = document.querySelector('form');
+            const DIALOG = document.querySelector('dialog');
+            const DIGITS = Array.from(document.querySelectorAll('dialog .digits div'));
+            let timer;
+            
+            FORM.addEventListener('submit', async ( event ) => {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const name = formData.get('owner');
+                if (name !== "") {
+                    try {
+                        console.log("Fetching soul code for.." + name);
+                        const response = await fetch("/issue/" + name);
+                        if (!response.ok) {
+                            console.error("?? ERROR ??");
+                            return false;
+                        }
+                        const code = await response.text();
+                        if (code !== "SOLD_OUT") {
+                            displayCode(code);
+                            FORM.reset();
+                            return true;
+                        }
+                    } catch ( error ) {
+                        console.error(error);
+                        return false;
+                    }
+                } else {
+                    alert("Name please / Name bitte");
+                    return false;
+                }
+            });
+
+            function displayCode( code ) {
+                console.log(code);
+                for (let d = 0; d < 5; d++) {
+                    DIGITS[d].innerText = String(code)[d];
+                }
+                DIALOG.classList.add('active');
+                timer = setTimeout(() => { dismissCode(); }, 60000);
+            }
+
+            function dismissCode( event ) {
+                clearTimeout(timer);
+                timer = null;
+                DIALOG.classList.remove('active');
+            }
+        </script>
+    </body>
+</html>
