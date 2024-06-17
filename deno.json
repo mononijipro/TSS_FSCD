@@ -1,5 +1,5 @@
 {
 	"tasks": {
-		"server": "deno run --allow-net --allow-read server.js"
+		"server": "deno run --allow-env --allow-net --allow-read server.js"
 	}
 }

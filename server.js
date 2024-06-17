@@ -2,9 +2,16 @@ import { Application, Router } from "https://deno.land/x/oak@14.2.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.4'
 
+const URL = Deno.env.get("PROJECT_URL");
+const KEY = Deno.env.get("SERVICE_KEY");
+if (!URL || !KEY) {
+    console.error("ENV vars not found!");
+    Deno.exit();
+}
+
+const SUPABASE = createClient(URL, KEY);
 const APP = new Application();
 const PORT = 80;
-const SUPABASE = createClient("https://jqahlwbeiamsrblpprpx.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxYWhsd2JlaWFtc3JibHBwcnB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY4OTMzNjksImV4cCI6MjAzMjQ2OTM2OX0.Qmm2y8EEoJ6RQVqpWvqfyFHT2oT-0TVkoSe7VXF_teE");
 
 APP.use(
     oakCors({
