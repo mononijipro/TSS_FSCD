@@ -15,7 +15,7 @@ const PORT = 80;
 
 APP.use(
     oakCors({
-        origin: ["http://localhost:5173", "https://thesoulstation.vercel.app"],
+        origin: ["http://localhost:5173", "https://thesoulstation.vercel.app", "https://www.yoursoulisdirty.com"],
         optionsSuccessStatus: 200,
         methods: "POST, OPTIONS",
     }),
