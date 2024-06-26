@@ -76,6 +76,6 @@ APP.use(async ( context, next ) => {
     }
 })
 APP.addEventListener("listen", ( { port } ) => {
-    console.log("Listening on port" + port + "\n");
+    console.log("Listening on port " + port + "\n");
 });
 await APP.listen({ port: PORT });

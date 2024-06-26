@@ -106,20 +106,26 @@
                 justify-content: center;
             }
             dialog {
+                color: white;
+                font-weight: bolder;
+                background-color: rgba(0,0,0,1);
+                border: none;
+                width: 100%;
+                box-shadow: 0rem 1.5rem 3rem black;
+            }
+            dialog#code {
                 position: absolute;
+                height: 100vh;
                 left: 0;
                 top: 0;
-                width: 100%;
-                height: 100vh;
-                background-color: rgba(0,0,0,1);
-                display: block;
-                padding: 0;
-                margin: 0;
                 opacity: 0;
+                display: block;
+                margin: 0;
+                padding: 0;
                 pointer-events: none;
                 transition: 1s ease-out opacity;
             }
-            dialog.active {
+            dialog#code.active {
                 opacity: 1;
                 pointer-events: all;
             }
@@ -148,7 +154,7 @@
             </div>
             <button>STEP 2) PRESS HERE TO RETRIEVE SOUL CODE /<br /> SCHRITT 2) HIER DRUECKEN UM SEELENCODE ZU ERHALTEN</button>
         </form>
-        <dialog>
+        <dialog id="code">
             <header>THIS IS YOUR PERSONAL SOUL CODE<br />YOU GET 60 SECONDS TO WRITE IT DOWN /<br />DIES IST IHR PERSOENLICHER SEELENCODE<br /> BITTEN NOTIEREN SIE IHN SICH IN DEN NAECHSTEN 60 SEKUNDEN</header>
             <div class="digits">
                 <div></div>
@@ -159,9 +165,14 @@
             </div>
             <button onclick="dismissCode()">DISMISS / BESTAETIGEN</button>
         </dialog>
+        <dialog id="error">
+            <p id="errorMessage"></p>
+            <button class="button" onclick="dismissError()">OKAY</button>
+        </dialog>
         <script>
             const FORM = document.querySelector('form');
             const DIALOG = document.querySelector('dialog');
+            const ERROR = document.getElementById('error');
             const DIGITS = Array.from(document.querySelectorAll('dialog .digits div'));
             let timer;
             
@@ -182,13 +193,16 @@
                             displayCode(code);
                             FORM.reset();
                             return true;
+                        } else {
+                            displayError("NO MORE CODES AVAILABLE<br />KEINE SEELENCODES MEHR ZU VERGEBEN");
+                            return false;
                         }
                     } catch ( error ) {
                         console.error(error);
                         return false;
                     }
                 } else {
-                    alert("Name please / Name bitte");
+                    displayError("Name please<br />Bitte Namen angeben");
                     return false;
                 }
             });
@@ -206,6 +220,16 @@
                 clearTimeout(timer);
                 timer = null;
                 DIALOG.classList.remove('active');
+            }
+
+            function displayError( errorMessage ) {
+                const MSG = document.getElementById('errorMessage');
+                MSG.innerHTML = errorMessage;
+                ERROR.showModal();
+            }
+
+            function dismissError() {
+                ERROR.close();
             }
         </script>
     </body>
