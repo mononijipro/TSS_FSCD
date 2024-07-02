@@ -129,6 +129,12 @@
                 opacity: 1;
                 pointer-events: all;
             }
+            .warning {
+                display: none;
+            }
+            dialog#code.stationary header .warning {
+                display: inline;
+            }
             header {
                 padding: 0 4rem;
                 display: flex;
@@ -155,7 +161,18 @@
             <button>STEP 2) PRESS HERE TO RETRIEVE SOUL CODE /<br /> SCHRITT 2) HIER DRUECKEN UM SEELENCODE ZU ERHALTEN</button>
         </form>
         <dialog id="code">
-            <header>THIS IS YOUR PERSONAL SOUL CODE<br />YOU GET 60 SECONDS TO WRITE IT DOWN /<br />DIES IST IHR PERSOENLICHER SEELENCODE<br /> BITTEN NOTIEREN SIE IHN SICH IN DEN NAECHSTEN 60 SEKUNDEN</header>
+            <header>
+                <p>
+                    <span>THIS IS YOUR PERSONAL SOUL CODE</span>
+                    <br />
+                    <span class="warning">YOU GET 60 SECONDS TO WRITE IT DOWN</span>
+                </p>      
+                <p>
+                    <span>HIER IST DEIN PERSOENLICHER SEELENCODE</span>
+                    <br />
+                    <span class="warning">DU HAST 60 SEKUNDEN ZEIT, DEN CODE ZU NOTIEREN</span>
+                </p>
+            </header>
             <div class="digits">
                 <div></div>
                 <div></div>
@@ -171,11 +188,21 @@
         </dialog>
         <script>
             const FORM = document.querySelector('form');
-            const DIALOG = document.querySelector('dialog');
+            const DIALOG = document.getElementById('code');
             const ERROR = document.getElementById('error');
             const DIGITS = Array.from(document.querySelectorAll('dialog .digits div'));
             let timer;
-            
+
+            const PARAMS = new URLSearchParams(window.location.search);
+            let isStationary = PARAMS.has('stationary') ? true : false;
+
+            if (!isStationary) {
+                const CODE = localStorage.getItem("code");
+                if (CODE) displayCode(CODE);
+            } else {
+                DIALOG.classList.add("stationary");
+            }
+
             FORM.addEventListener('submit', async ( event ) => {
                 event.preventDefault();
                 const formData = new FormData(event.target);
@@ -190,6 +217,8 @@
                         }
                         const code = await response.text();
                         if (code !== "SOLD_OUT") {
+                            if (!isStationary)
+                                localStorage.setItem("code", code);
                             displayCode(code);
                             FORM.reset();
                             return true;
@@ -208,12 +237,15 @@
             });
 
             function displayCode( code ) {
-                console.log(code);
+                // console.log(code);
                 for (let d = 0; d < 5; d++) {
                     DIGITS[d].innerText = String(code)[d];
                 }
+                if (isStationary) {
+                    timer = setTimeout(() => { dismissCode(); }, 60000);
+
+                }
                 DIALOG.classList.add('active');
-                timer = setTimeout(() => { dismissCode(); }, 60000);
             }
 
             function dismissCode( event ) {
