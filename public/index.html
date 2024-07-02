@@ -148,8 +148,8 @@
 	<body>
         <form>
             <header>
-                STEP 1) ENTER YOUR NAME HERE / <br />SCHRITT 1) BITTE NAMEN HIER EINGEBEN<br />
-                <input name="owner" value="" type="text" placeholder="YOUR NAME" />
+                STEP 1) ENTER YOUR NAME HERE / <br />SCHRITT 1) GIB DEINEN NAMEN HIER EIN<br />
+                <input name="owner" value="" type="text" placeholder="YOUR NAME / DEIN NAME" />
             </header>
             <div class="digits">
                 <div>&nbsp;</div>
@@ -158,12 +158,12 @@
                 <div>&nbsp;</div>
                 <div>&nbsp;</div>
             </div>
-            <button>STEP 2) PRESS HERE TO RETRIEVE SOUL CODE /<br /> SCHRITT 2) HIER DRUECKEN UM SEELENCODE ZU ERHALTEN</button>
+            <button>STEP 2) PRESS HERE TO RETRIEVE SOUL CODE /<br /> SCHRITT 2) DRUECK HIER, UM SEELENCODE ZU ERHALTEN</button>
         </form>
         <dialog id="code">
             <header>
                 <p>
-                    <span>THIS IS YOUR PERSONAL SOUL CODE</span>
+                    <span>THIS IS YOUR PERSONAL<br />SOUL CODE</span>
                     <br />
                     <span class="warning">YOU GET 60 SECONDS TO WRITE IT DOWN</span>
                 </p>      
@@ -180,7 +180,7 @@
                 <div></div>
                 <div></div>
             </div>
-            <button onclick="dismissCode()">DISMISS / BESTAETIGEN</button>
+            <button onclick="dismissCode()">I'VE MADE A NOTE OF IT<br />ICH HABE IHN MIR NOTIERT</button>
         </dialog>
         <dialog id="error">
             <p id="errorMessage"></p>
@@ -223,7 +223,7 @@
                             FORM.reset();
                             return true;
                         } else {
-                            displayError("NO MORE CODES AVAILABLE<br />KEINE SEELENCODES MEHR ZU VERGEBEN");
+                            displayError("NO MORE CODES AVAILABLE<br />KEINE SEELENCODES MEHR VERFÜGBAR");
                             return false;
                         }
                     } catch ( error ) {
@@ -231,7 +231,7 @@
                         return false;
                     }
                 } else {
-                    displayError("Name please<br />Bitte Namen angeben");
+                    displayError("Name please<br />Bitte Namen eingeben");
                     return false;
                 }
             });
