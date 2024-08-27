@@ -30,7 +30,7 @@ ROUTER.get("/issue/:name", async ( context ) => {
             context.response.body = data;
             console.log(`CLAIMED ${data}`);
         } else {
-            console.error(error);
+            console.error(`OUT OF CODES!`);
             context.response.body = "SOLD_OUT";
         }   
     }
@@ -44,7 +44,7 @@ ROUTER.post("/auth/:code", async ( context ) => {
     if (!error) {
         context.response.body = data.progress;
     } else {
-        console.error(error);
+        console.error(`INVALID CODE ${code}`);
         context.response.body = "Not a valid code";
         context.response.status = 403;
     }
