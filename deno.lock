@@ -19,7 +19,11 @@
     },
     "jsr": {
       "@oak/commons@0.7.0": {
-        "integrity": "4bd889b3dc9ddac1b602034d88c137f06de7078775961b51081beb5f175c120b"
+        "integrity": "4bd889b3dc9ddac1b602034d88c137f06de7078775961b51081beb5f175c120b",
+        "dependencies": [
+          "jsr:@std/assert@0.218",
+          "jsr:@std/media-types@0.218"
+        ]
       },
       "@std/assert@0.218.2": {
         "integrity": "7f0a5a1a8cf86607cd6c2c030584096e1ffad27fc9271429a8cb48cfbdee5eaf"
@@ -72,10 +76,22 @@
     }
   },
   "redirects": {
+    "https://deno.land/std/datetime/mod.ts": "https://deno.land/std@0.224.0/datetime/mod.ts",
     "https://deno.land/x/cors/mod.ts": "https://deno.land/x/cors@v1.2.2/mod.ts",
+    "https://deno.land/x/oak_logger/mod.ts": "https://deno.land/x/oak_logger@1.0.0/mod.ts",
     "https://esm.sh/@supabase/supabase-js@2": "https://esm.sh/@supabase/supabase-js@2.43.4"
   },
   "remote": {
+    "https://deno.land/std@0.224.0/datetime/_date_time_formatter.ts": "b810c4c0d8f7aafe765fb963efdbf704acceb0730f5b242a7ec46df37834307c",
+    "https://deno.land/std@0.224.0/datetime/constants.ts": "5df80a84e301da6db5793804122c034d2d090da31f1e1c5fdaa831fc70a45da7",
+    "https://deno.land/std@0.224.0/datetime/day_of_year.ts": "5e513e239bd473e86d6a869d154720e9b6b8c86e1f14330ed5bb97575d9fa07b",
+    "https://deno.land/std@0.224.0/datetime/difference.ts": "8da08374910cae7d316cd7669912b70465f36d4e159e2c9f525a441f91fa9c7a",
+    "https://deno.land/std@0.224.0/datetime/format.ts": "8a550406530533c4aba101d471695f7f96c0eae61c1346748708eb333290d5f8",
+    "https://deno.land/std@0.224.0/datetime/is_leap.ts": "77f6eb9a4b7ea2a2dedbfecf75fd0a3f8f0e1610f708480e692f401f29e72650",
+    "https://deno.land/std@0.224.0/datetime/mod.ts": "6a49163dd0c7986658ed425b3555da5312252e5f5156bced6ae7199e651aa83b",
+    "https://deno.land/std@0.224.0/datetime/parse.ts": "d6dea8b3e394908dfd016bbe4545f260da4032493294aee1d10a3cf194c191cb",
+    "https://deno.land/std@0.224.0/datetime/week_of_year.ts": "ecaff056953753db3dabc9a769f80ff7ea7be79ae1e34edb5e2bda336f685757",
+    "https://deno.land/std@0.53.0/fmt/colors.ts": "ec9d653672a9a3c7b6eafe53c5bc797364a2db2dcf766ab649c1155fea7a80b2",
     "https://deno.land/x/cors@v1.2.2/abcCors.ts": "cdf83a7eaa69a1bf3ab910d18b9422217902fac47601adcaf0afac5a61845d48",
     "https://deno.land/x/cors@v1.2.2/attainCors.ts": "7d6aba0f942495cc31119604e0895c9bb8edd8f8baa7fe78e6c655bd0b4cbf59",
     "https://deno.land/x/cors@v1.2.2/cors.ts": "0e2d9167e3685f9bcf48f565e312b6e1883fa458f7337e5ce7bc2e3b29767980",
@@ -112,6 +128,7 @@
     "https://deno.land/x/oak@14.2.0/testing.ts": "157711ade8634f9377ca87147db4317861d51388c82e0da4ae829c142a123db8",
     "https://deno.land/x/oak@14.2.0/types.ts": "09f0494db5d642e3492d23cd46da665d2df2590ef7e987b0412659260453d1f9",
     "https://deno.land/x/oak@14.2.0/util.ts": "22fb55001472158ed4bdf53ce1a6848e10860507aa9a2e16d0b92d2b420f2a90",
+    "https://deno.land/x/oak_logger@1.0.0/mod.ts": "10253fd9517a71d3c0771fcf2d9bd9297874160794d470597afce4102b0d51b3",
     "https://esm.sh/@supabase/supabase-js@2.43.4": "b6163f4f90c7018f43fdd9bab1b7ef5bcbb74114352de77dfbc49e53e23a0174",
     "https://esm.sh/v135/@supabase/auth-js@2.64.2/denonext/auth-js.mjs": "f87ccfa4e23123f7ab122f814fa37ce26c00457a3e32cea718a726d72fec1f37",
     "https://esm.sh/v135/@supabase/functions-js@2.3.1/denonext/functions-js.mjs": "c10a0bbd935fc12cae58918b8e23cb339d54c443983caeb597dd8cd76a76f940",

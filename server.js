@@ -1,6 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@14.2.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.4'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.4';
 
 const URL = Deno.env.get("PROJECT_URL");
 const KEY = Deno.env.get("SERVICE_KEY");
@@ -24,9 +24,11 @@ APP.use(
 const ROUTER = new Router();
 ROUTER.get("/issue/:name", async ( context ) => {
     if (context.params.name) {
+        console.log(`GET /issue/${context.params.name}`);
         const { data, error } = await SUPABASE.rpc('claim_random_soul');
         if (!error) {
             context.response.body = data;
+            console.log(`CLAIMED ${data}`);
         } else {
             console.error(error);
             context.response.body = "SOLD_OUT";
@@ -36,6 +38,7 @@ ROUTER.get("/issue/:name", async ( context ) => {
 
 ROUTER.post("/auth/:code", async ( context ) => {
     const code = context.params.code;
+    console.log(`POST /auth/${code}`);
     if (code && code.length !== 5) return;
     const { data, error } = await SUPABASE.from('souls').select('progress').eq('code', code).eq('claimed', true).limit(1).single(); 
     if (!error) {
@@ -50,6 +53,7 @@ ROUTER.post("/auth/:code", async ( context ) => {
 ROUTER.post("/record/:code/:progress", async ( context ) => {
     const code = context.params.code;
     const progress = context.params.progress;
+    console.log(`POST /record/${code}/${progress}`);
     if (code.length != 5 || progress.length != 6) {
         context.response.body = "Incorrect parameters..";
         context.response.status = 403;
@@ -66,6 +70,7 @@ ROUTER.post("/record/:code/:progress", async ( context ) => {
 APP.use(ROUTER.routes());
 APP.use(ROUTER.allowedMethods());
 APP.use(async ( context, next ) => {
+    console.log(`GET ${context.request.url}`);
     try {
         await context.send({
             root: `${Deno.cwd()}/public`,
@@ -76,6 +81,6 @@ APP.use(async ( context, next ) => {
     }
 })
 APP.addEventListener("listen", ( { port } ) => {
-    console.log("Listening on port " + port + "\n");
+    console.log("Deno is listening on " + port);
 });
 await APP.listen({ port: PORT });
