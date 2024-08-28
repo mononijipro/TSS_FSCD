@@ -32,9 +32,12 @@
 				min-height: 100vh;
 				height: 100vh;
 				text-transform: uppercase;
-				background: #000 url(/soulcodebackground.gif) no-repeat center center;
-				background-size: cover;
+				background: #000;
 			}
+            body.stationary {
+                background: #000 url(/soulcodebackground.gif) no-repeat center center;
+                background-size: cover;
+            }
 			p {
 				text-align: center;
 			}
@@ -214,6 +217,7 @@
                 const CODE = localStorage.getItem("code");
                 if (CODE) displayCode(CODE);
             } else {
+                document.body.classList.add('stationary');
                 DIALOG.classList.add("stationary");
             }
 
