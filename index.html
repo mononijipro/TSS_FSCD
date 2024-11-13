@@ -9,11 +9,6 @@
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 		<style>
-            /* @font-face {
-				font-family: "DOTIMPACT";
-				src: url("DOTIMPACT.ttf") format("truetype");
-				font-weight: normal;
-			} */
             @font-face {
                 font-family: "Plex Sans";
                 src: url("https://thesoulstation.b-cdn.net/IBM_Plex_Sans.woff2") format("woff2");
@@ -33,9 +28,6 @@
 				min-height: 100vh;
 				height: 100vh;
 				text-transform: uppercase;
-				background: #000;
-			}
-            body.stationary {
                 background: #000 url(https://thesoulstation.b-cdn.net/soulcodebackground.gif) no-repeat center center;
                 background-size: cover;
             }
@@ -212,43 +204,34 @@
             let timer;
 
             const PARAMS = new URLSearchParams(window.location.search);
-            let isStationary = PARAMS.has('stationary') ? true : false;
+            DIALOG.classList.add("stationary");
 
-            if (!isStationary) {
-                const CODE = localStorage.getItem("code");
-                if (CODE) displayCode(CODE);
-            } else {
-                document.body.classList.add('stationary');
-                DIALOG.classList.add("stationary");
-            }
-
-            FORM.addEventListener('submit', async ( event ) => {
+            FORM.addEventListener('submit', ( event ) => {
                 event.preventDefault();
                 const formData = new FormData(event.target);
                 const name = formData.get('owner');
                 if (name !== "") {
-                    try {
-                        console.log("Fetching soul code for.." + name);
-                        const response = await fetch("/issue/" + name);
-                        if (!response.ok) {
-                            console.error("?? ERROR ??");
-                            return false;
-                        }
-                        const code = await response.text();
-                        if (code !== "SOLD_OUT") {
-                            if (!isStationary)
-                                localStorage.setItem("code", code);
+                    var code = "12345";
+                //     try {
+                //         console.log("Fetching soul code for.." + name);
+                //         const response = await fetch("/issue/" + name);
+                //         if (!response.ok) {
+                //             console.error("?? ERROR ??");
+                //             return false;
+                //         }
+                //         const code = await response.text();
+                //         if (code !== "SOLD_OUT") {
                             displayCode(code);
                             FORM.reset();
                             return true;
-                        } else {
-                            displayError("NO MORE CODES AVAILABLE<br />KEINE SEELENCODES MEHR VERFÜGBAR");
-                            return false;
-                        }
-                    } catch ( error ) {
-                        console.error(error);
-                        return false;
-                    }
+                //         } else {
+                //             displayError("NO MORE CODES AVAILABLE<br />KEINE SEELENCODES MEHR VERFÜGBAR");
+                //             return false;
+                //         }
+                //     } catch ( error ) {
+                //         console.error(error);
+                //         return false;
+                //     }
                 } else {
                     displayError("Name please<br />Bitte Namen eingeben");
                     return false;
@@ -256,14 +239,10 @@
             });
 
             function displayCode( code ) {
-                // console.log(code);
                 for (let d = 0; d < 5; d++) {
                     DIGITS[d].innerText = String(code)[d];
                 }
-                if (isStationary) {
-                    timer = setTimeout(() => { dismissCode(); }, 60000);
-
-                }
+                timer = setTimeout(() => { dismissCode(); }, 60000);
                 DIALOG.classList.add('active');
             }
 
