@@ -1,2 +1,2 @@
-# TSS_TSS_API
-Backend server and SOUL CODE dispenser written in Deno
+# Fake SOUL CODE Dispenser
+for future installs of THE SOUL STATION
