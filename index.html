@@ -211,7 +211,7 @@
                 const formData = new FormData(event.target);
                 const name = formData.get('owner');
                 if (name !== "") {
-                    var code = "12345";
+                    var code = generateCode();
                 //     try {
                 //         console.log("Fetching soul code for.." + name);
                 //         const response = await fetch("/issue/" + name);
@@ -237,6 +237,14 @@
                     return false;
                 }
             });
+
+            function generateCode() {
+                var code = "";
+                for (let c=0; c<5; c++) {
+                    code += Math.floor(Math.random() * 10);
+                }
+                return code;
+            }
 
             function displayCode( code ) {
                 for (let d = 0; d < 5; d++) {
